@@ -1,0 +1,38 @@
+{
+  "name": "vite-plugin-route-builder",
+  "type": "module",
+  "version": "0.2.1",
+  "files": [
+    "src",
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsdown",
+    "test": "vitest",
+    "test:run": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "24.1.0",
+    "bumpp": "10.2.0",
+    "es-toolkit": "1.39.7",
+    "fast-glob": "3.3.3",
+    "happy-dom": "18.0.1",
+    "pathe": "2.0.3",
+    "react-router": "7.7.0",
+    "tsdown": "0.13.0",
+    "typescript": "5.8.3",
+    "vite": "7.0.5",
+    "vite-tsconfig-paths": "5.1.4",
+    "vitest": "3.2.4"
+  },
+  "access": "public",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "packageManager": "pnpm@10.13.1+sha512.37ebf1a5c7a30d5fabe0c5df44ee8da4c965ca0c5af3dbab28c3a1681b70a256218d05c81c9c0dcf767ef6b8551eb5b960042b9ed4300c59242336377e01cfad"
+}
