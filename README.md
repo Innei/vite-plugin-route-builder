@@ -61,7 +61,7 @@ src/pages/
 
 ```tsx
 // src/App.tsx
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { createBrowserRouter, RouterProvider } from 'react-router'
 import { routes } from './generated-routes'
 
 const router = createBrowserRouter(routes)
