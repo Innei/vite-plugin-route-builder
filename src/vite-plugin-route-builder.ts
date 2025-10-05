@@ -305,6 +305,7 @@ export function routeBuilderPlugin(
               newRoute.Component = `__SYNC_${syncComponentName}.Component__`
               // Conditionally add loader if it exists
               newRoute.loader = `__SYNC_${syncComponentName}.loader__`
+              newRoute.handle = `__SYNC_${syncComponentName}.handle__`
               delete newRoute.lazy
             } else if (lazyFunctionMap.has(matchedKey)) {
               newRoute.lazy = `__LAZY_${lazyFunctionMap.get(matchedKey)}__`
@@ -341,6 +342,7 @@ export function routeBuilderPlugin(
       .replaceAll(/"__LAZY_(\w+)__"/g, '$1')
       .replaceAll(/"__SYNC_([^.]+)\.Component__"/g, '$1.Component')
       .replaceAll(/"__SYNC_([^.]+)\.loader__"/g, '$1.loader')
+      .replaceAll(/"__SYNC_([^.]+)\.handle__"/g, '$1.handle')
       // Remove loader property if it's undefined
       .replaceAll(/,?\s*"loader":\s*undefined/g, '')
 
