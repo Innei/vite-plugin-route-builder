@@ -1,4 +1,12 @@
-import { get, omit } from "es-toolkit/compat"
+import { get, omit } from 'es-toolkit/compat'
+
+export const ROUTE_BUILDER_HANDLE = Symbol()
+
+export interface RouteBuilderHandleMetadata {
+  fs: string
+  fullPath: string
+  isSync?: boolean
+}
 
 type NestedStructure = { [key: string]: NestedStructure }
 
@@ -7,19 +15,19 @@ function nestPaths(paths: string[]): NestedStructure {
 
   paths.forEach((path) => {
     // Remove the './pages' prefix and the file extension
-    const prefix = "./pages/"
-    let suffix = ".tsx"
+    const prefix = './pages/'
+    let suffix = '.tsx'
     let trimmedPath: string
 
     // Check if it's a .sync.tsx file
-    if (path.endsWith(".sync.tsx")) {
-      suffix = ".sync.tsx"
+    if (path.endsWith('.sync.tsx')) {
+      suffix = '.sync.tsx'
       trimmedPath = path.slice(prefix.length, -suffix.length)
     } else {
       trimmedPath = path.slice(prefix.length, -suffix.length)
     }
 
-    const parts = trimmedPath.split("/")
+    const parts = trimmedPath.split('/')
 
     let currentLevel = result
     for (const part of parts) {
@@ -34,20 +42,17 @@ function nestPaths(paths: string[]): NestedStructure {
 }
 
 // Extended RouteObject to include sync loading information
-interface ExtendedRouteObject {
+export interface ExtendedRouteObject {
   path?: string
   index?: boolean
   children?: ExtendedRouteObject[]
-  lazy?: any
-  handle?: {
-    fs: string
-    fullPath: string
-    isSync?: boolean
-  }
+  lazy?: unknown
+  handle?: unknown
+  [ROUTE_BUILDER_HANDLE]?: RouteBuilderHandleMetadata
 }
 
 export function buildGlobRoutes(
-  glob: Record<string, () => Promise<any>>,
+  glob: Record<string, () => Promise<unknown>>,
   options: { segmentGroupOrder?: string[] } = {},
 ): ExtendedRouteObject[] {
   const keys = Object.keys(glob)
@@ -61,21 +66,21 @@ export function buildGlobRoutes(
     parentKey: string,
     children: ExtendedRouteObject[],
     paths: NestedStructure,
-    parentPath = "",
+    parentPath = '',
   ) {
     const pathKeys = Object.keys(paths)
     // sort `layout` to the start, and `index` to the end
     pathKeys.sort((a, b) => {
-      if (a === "layout") {
+      if (a === 'layout') {
         return -1
       }
-      if (b === "layout") {
+      if (b === 'layout') {
         return 1
       }
-      if (a === "index") {
+      if (a === 'index') {
         return 1
       }
-      if (b === "index") {
+      if (b === 'index') {
         return -1
       }
       return a.localeCompare(b)
@@ -83,10 +88,10 @@ export function buildGlobRoutes(
 
     // sort, if () group, then move to the end
     pathKeys.sort((a, b) => {
-      if (a.startsWith("(") && a.endsWith(")")) {
+      if (a.startsWith('(') && a.endsWith(')')) {
         return 1
       }
-      if (b.startsWith("(") && b.endsWith(")")) {
+      if (b.startsWith('(') && b.endsWith(')')) {
         return -1
       }
       return 0
@@ -95,8 +100,8 @@ export function buildGlobRoutes(
     // Custom segment group ordering based on segmentGroupOrder option
     if (segmentGroupOrder.length > 0) {
       pathKeys.sort((a, b) => {
-        const isAGroup = a.startsWith("(") && a.endsWith(")")
-        const isBGroup = b.startsWith("(") && b.endsWith(")")
+        const isAGroup = a.startsWith('(') && a.endsWith(')')
+        const isBGroup = b.startsWith('(') && b.endsWith(')')
 
         // If both are groups, sort by the custom order
         if (isAGroup && isBGroup) {
@@ -129,7 +134,7 @@ export function buildGlobRoutes(
     }
 
     for (const key of pathKeys) {
-      const isGroupedRoute = key.startsWith("(") && key.endsWith(")")
+      const isGroupedRoute = key.startsWith('(') && key.endsWith(')')
 
       const segmentPathKey = parentKey + key
 
@@ -158,20 +163,25 @@ export function buildGlobRoutes(
         pathGetterSet.add(accessPath)
 
         const childrenChildren: ExtendedRouteObject[] = []
-        dfsRoutes(`${segmentPathKey}/`, childrenChildren, paths[key]!, parentPath)
+        dfsRoutes(
+          `${segmentPathKey}/`,
+          childrenChildren,
+          paths[key]!,
+          parentPath,
+        )
         children.push({
-          path: "",
+          path: '',
           lazy: globGetter,
           children: childrenChildren,
-          handle: {
+          [ROUTE_BUILDER_HANDLE]: {
             fs: segmentPathKey,
             fullPath: parentPath,
             isSync,
           },
         })
-      } else if (key === "layout") {
+      } else if (key === 'layout') {
         // if parent key is grouped routes, the layout is handled, so skip this logic
-        if (parentKey.endsWith(")/")) {
+        if (parentKey.endsWith(')/')) {
           continue
         }
 
@@ -192,17 +202,24 @@ export function buildGlobRoutes(
 
         const childrenChildren: ExtendedRouteObject[] = []
         // should omit layout, because layout is already handled
-        dfsRoutes(parentKey, childrenChildren, omit(paths, "layout") as NestedStructure, parentPath)
-        children.push({
-          path: "",
+        dfsRoutes(
+          parentKey,
+          childrenChildren,
+          omit(paths, 'layout') as NestedStructure,
+          parentPath,
+        )
+        const layoutRoute: ExtendedRouteObject = {
+          path: '',
           lazy: globGetter,
           children: childrenChildren,
-          handle: {
+          [ROUTE_BUILDER_HANDLE]: {
             fs: segmentPathKey,
             fullPath: parentPath,
             isSync,
           },
-        })
+        }
+
+        children.push(layoutRoute)
         break
       } else {
         const content = paths[key]!
@@ -234,42 +251,51 @@ export function buildGlobRoutes(
           }
           pathGetterSet.add(accessPath)
 
-          children.push({
+          const leafRoute: ExtendedRouteObject = {
             path: normalizeKey,
             lazy: globGetter,
-            handle: {
+            [ROUTE_BUILDER_HANDLE]: {
               fs: `${segmentPathKey}/${normalizeKey}`,
               fullPath: `${parentPath}/${normalizeKey}`,
               isSync,
             },
-          })
+          }
+
+          children.push(leafRoute)
         } else {
           const childrenChildren: ExtendedRouteObject[] = []
           const fullPath = `${parentPath}/${normalizeKey}`
-          dfsRoutes(`${segmentPathKey}/`, childrenChildren, paths[key]!, fullPath)
-          children.push({
+          dfsRoutes(
+            `${segmentPathKey}/`,
+            childrenChildren,
+            paths[key]!,
+            fullPath,
+          )
+          const branchRoute: ExtendedRouteObject = {
             path: normalizeKey,
             children: childrenChildren,
-            handle: {
+            [ROUTE_BUILDER_HANDLE]: {
               fs: `${segmentPathKey}/${normalizeKey}`,
               fullPath,
             },
-          })
+          }
+
+          children.push(branchRoute)
         }
       }
     }
   }
 
-  dfsRoutes("./pages/", routeObject, paths)
+  dfsRoutes('./pages/', routeObject, paths)
   return routeObject
 }
 
 const normalizePathKey = (key: string) => {
-  if (key === "index") {
-    return ""
+  if (key === 'index') {
+    return ''
   }
 
-  if (key.startsWith("[") && key.endsWith("]")) {
+  if (key.startsWith('[') && key.endsWith(']')) {
     return `:${key.slice(1, -1)}`
   }
   return key

@@ -1,1 +1,1 @@
-export { default } from "./vite-plugin-route-builder"
+export { routeBuilderPlugin } from './vite-plugin-route-builder'

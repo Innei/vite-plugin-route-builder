@@ -5,7 +5,26 @@ import glob from 'fast-glob'
 import { dirname, relative, resolve } from 'pathe'
 import type { Logger, Plugin } from 'vite'
 
-import { buildGlobRoutes } from './utils/route-builder'
+import {
+  type ExtendedRouteObject,
+  ROUTE_BUILDER_HANDLE,
+  buildGlobRoutes,
+} from './utils/route-builder'
+
+type RouteWithInternalHandle = ExtendedRouteObject & {
+  [ROUTE_BUILDER_HANDLE]?: ExtendedRouteObject[typeof ROUTE_BUILDER_HANDLE]
+}
+
+type SerializableRouteObject = Omit<
+  RouteWithInternalHandle,
+  typeof ROUTE_BUILDER_HANDLE | 'children' | 'lazy'
+> & {
+  lazy?: string | (() => Promise<unknown>)
+  Component?: string
+  loader?: string
+  children?: SerializableRouteObject[]
+  [key: string]: unknown
+}
 
 export interface RouteBuilderPluginOptions {
   /** Page files glob pattern */
@@ -39,7 +58,7 @@ export function routeBuilderPlugin(
   let logger: Logger
 
   function generateRouteFileContent(
-    routes: any[],
+    routes: ExtendedRouteObject[],
     fileToImportMap: Record<string, string>,
   ): string {
     // Collect all used lazy functions and sync imports
@@ -51,11 +70,13 @@ export function routeBuilderPlugin(
     let syncCounter = 0
 
     // Recursively traverse route tree, collect all used functions
-    function collectUsedFunctions(routes: any[]) {
+    function collectUsedFunctions(routes: ExtendedRouteObject[]) {
       routes.forEach((route) => {
-        if (route.lazy && route.handle?.fs) {
-          const fsPath = route.handle.fs
-          const { isSync } = route.handle
+        const metadata = route[ROUTE_BUILDER_HANDLE]
+
+        if (route.lazy && metadata?.fs) {
+          const fsPath = metadata.fs
+          const { isSync } = metadata
 
           // Try to find the corresponding file
           let matchedKey: string | undefined
@@ -200,14 +221,18 @@ export function routeBuilderPlugin(
     })
 
     // Recursively process routes, replace lazy functions and remove handle
-    function processRoutes(routes: any[]): any {
+    function processRoutes(
+      routes: ExtendedRouteObject[],
+    ): SerializableRouteObject[] {
       return routes.map((route) => {
-        const newRoute: any = { ...route }
+        const newRoute = { ...route } as SerializableRouteObject &
+          RouteWithInternalHandle
+        const metadata = route[ROUTE_BUILDER_HANDLE]
 
         // Process lazy functions and sync imports
-        if (route.lazy && route.handle?.fs) {
-          const fsPath = route.handle.fs
-          const { isSync } = route.handle
+        if (route.lazy && metadata?.fs) {
+          const fsPath = metadata.fs
+          const { isSync } = metadata
 
           // Find matching file - use the same matching logic
           let matchedKey: string | undefined
@@ -296,8 +321,9 @@ export function routeBuilderPlugin(
           }
         }
 
-        // Remove handle property
-        delete newRoute.handle
+        if (metadata) {
+          delete newRoute[ROUTE_BUILDER_HANDLE]
+        }
 
         // Recursively process children
         if (route.children) {
@@ -345,7 +371,7 @@ export default routes
       logger.info(`[route-builder-v2] Found ${pageFiles.length} page files`)
 
       // Build glob object, key is the relative path to pages directory
-      const globObject: Record<string, () => Promise<any>> = {}
+      const globObject: Record<string, () => Promise<unknown>> = {}
       const fileToImportMap: Record<string, string> = {}
 
       pageFiles.forEach((absolutePath) => {
