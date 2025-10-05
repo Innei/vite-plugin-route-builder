@@ -21,7 +21,8 @@ export const routes: RouteObject[] = [
   {
     "path": "about",
     "Component": SyncComponent0.Component,
-    "loader": SyncComponent0.loader
+    "loader": SyncComponent0.loader,
+    "handle": SyncComponent0.handle
   },
   {
     "path": "blog",
@@ -38,7 +39,8 @@ export const routes: RouteObject[] = [
       {
         "path": "admin",
         "Component": SyncComponent1.Component,
-        "loader": SyncComponent1.loader
+        "loader": SyncComponent1.loader,
+        "handle": SyncComponent1.handle
       }
     ]
   },
@@ -52,7 +54,8 @@ export const routes: RouteObject[] = [
           {
             "path": "profile",
             "Component": SyncComponent2.Component,
-            "loader": SyncComponent2.loader
+            "loader": SyncComponent2.loader,
+            "handle": SyncComponent2.handle
           }
         ]
       }
@@ -129,12 +132,14 @@ export const routes: RouteObject[] = [
   {
     "path": "critical",
     "Component": SyncComponent0.Component,
-    "loader": SyncComponent0.loader
+    "loader": SyncComponent0.loader,
+    "handle": SyncComponent0.handle
   },
   {
     "path": "important",
     "Component": SyncComponent1.Component,
-    "loader": SyncComponent1.loader
+    "loader": SyncComponent1.loader,
+    "handle": SyncComponent1.handle
   },
   {
     "path": "settings",
@@ -142,7 +147,8 @@ export const routes: RouteObject[] = [
       {
         "path": "config",
         "Component": SyncComponent2.Component,
-        "loader": SyncComponent2.loader
+        "loader": SyncComponent2.loader,
+        "handle": SyncComponent2.handle
       }
     ]
   }
@@ -217,7 +223,8 @@ export const routes: RouteObject[] = [
   {
     "path": "critical",
     "Component": SyncComponent0.Component,
-    "loader": SyncComponent0.loader
+    "loader": SyncComponent0.loader,
+    "handle": SyncComponent0.handle
   },
   {
     "path": "normal",

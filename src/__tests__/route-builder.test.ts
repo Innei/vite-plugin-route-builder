@@ -29,38 +29,38 @@ describe("test route builder", () => {
             {
               "children": [
                 {
-                  "handle": {
+                  "lazy": [Function],
+                  "path": "",
+                  Symbol(): {
                     "fs": "./pages/add/index/",
                     "fullPath": "/add/",
                     "isSync": false,
                   },
-                  "lazy": [Function],
-                  "path": "",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/add/layout",
                 "fullPath": "/add",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "path": "add",
+          Symbol(): {
             "fs": "./pages/add/add",
             "fullPath": "/add",
           },
-          "path": "add",
         },
         {
-          "handle": {
+          "lazy": [Function],
+          "path": "preview",
+          Symbol(): {
             "fs": "./pages/preview/preview",
             "fullPath": "/preview",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "preview",
         },
         {
           "children": [
@@ -73,63 +73,63 @@ describe("test route builder", () => {
                         {
                           "children": [
                             {
-                              "handle": {
+                              "lazy": [Function],
+                              "path": "",
+                              Symbol(): {
                                 "fs": "./pages/(external)/(with-layout)/feed/[id]/index/",
                                 "fullPath": "/feed/:id/",
                                 "isSync": false,
                               },
-                              "lazy": [Function],
-                              "path": "",
                             },
                           ],
-                          "handle": {
+                          "lazy": [Function],
+                          "path": "",
+                          Symbol(): {
                             "fs": "./pages/(external)/(with-layout)/feed/[id]/layout",
                             "fullPath": "/feed/:id",
                             "isSync": false,
                           },
-                          "lazy": [Function],
-                          "path": "",
                         },
                       ],
-                      "handle": {
+                      "path": ":id",
+                      Symbol(): {
                         "fs": "./pages/(external)/(with-layout)/feed/[id]/:id",
                         "fullPath": "/feed/:id",
                       },
-                      "path": ":id",
                     },
                   ],
-                  "handle": {
+                  "path": "feed",
+                  Symbol(): {
                     "fs": "./pages/(external)/(with-layout)/feed/feed",
                     "fullPath": "/feed",
                   },
-                  "path": "feed",
                 },
                 {
-                  "handle": {
+                  "lazy": [Function],
+                  "path": "",
+                  Symbol(): {
                     "fs": "./pages/(external)/(with-layout)/index/",
                     "fullPath": "/",
                     "isSync": false,
                   },
-                  "lazy": [Function],
-                  "path": "",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/(external)/(with-layout)",
                 "fullPath": "",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(external)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [
@@ -140,47 +140,47 @@ describe("test route builder", () => {
                     {
                       "children": [
                         {
-                          "handle": {
+                          "lazy": [Function],
+                          "path": "",
+                          Symbol(): {
                             "fs": "./pages/(main)/(context)/discover/index/",
                             "fullPath": "/discover/",
                             "isSync": false,
                           },
-                          "lazy": [Function],
-                          "path": "",
                         },
                       ],
-                      "handle": {
+                      "lazy": [Function],
+                      "path": "",
+                      Symbol(): {
                         "fs": "./pages/(main)/(context)/discover/layout",
                         "fullPath": "/discover",
                         "isSync": false,
                       },
-                      "lazy": [Function],
-                      "path": "",
                     },
                   ],
-                  "handle": {
+                  "path": "discover",
+                  Symbol(): {
                     "fs": "./pages/(main)/(context)/discover/discover",
                     "fullPath": "/discover",
                   },
-                  "path": "discover",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/(main)/(context)",
                 "fullPath": "",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(main)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
       ]
     `)
@@ -214,38 +214,38 @@ describe("test route builder", () => {
             {
               "children": [
                 {
-                  "handle": {
+                  "lazy": [Function],
+                  "path": "",
+                  Symbol(): {
                     "fs": "./pages/add/index/",
                     "fullPath": "/add/",
                     "isSync": false,
                   },
-                  "lazy": [Function],
-                  "path": "",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/add/layout",
                 "fullPath": "/add",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "path": "add",
+          Symbol(): {
             "fs": "./pages/add/add",
             "fullPath": "/add",
           },
-          "path": "add",
         },
         {
-          "handle": {
+          "lazy": [Function],
+          "path": "preview",
+          Symbol(): {
             "fs": "./pages/preview/preview",
             "fullPath": "/preview",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "preview",
         },
         {
           "children": [
@@ -256,47 +256,47 @@ describe("test route builder", () => {
                     {
                       "children": [
                         {
-                          "handle": {
+                          "lazy": [Function],
+                          "path": "",
+                          Symbol(): {
                             "fs": "./pages/(main)/(context)/discover/index/",
                             "fullPath": "/discover/",
                             "isSync": false,
                           },
-                          "lazy": [Function],
-                          "path": "",
                         },
                       ],
-                      "handle": {
+                      "lazy": [Function],
+                      "path": "",
+                      Symbol(): {
                         "fs": "./pages/(main)/(context)/discover/layout",
                         "fullPath": "/discover",
                         "isSync": false,
                       },
-                      "lazy": [Function],
-                      "path": "",
                     },
                   ],
-                  "handle": {
+                  "path": "discover",
+                  Symbol(): {
                     "fs": "./pages/(main)/(context)/discover/discover",
                     "fullPath": "/discover",
                   },
-                  "path": "discover",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/(main)/(context)",
                 "fullPath": "",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(main)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [
@@ -309,63 +309,63 @@ describe("test route builder", () => {
                         {
                           "children": [
                             {
-                              "handle": {
+                              "lazy": [Function],
+                              "path": "",
+                              Symbol(): {
                                 "fs": "./pages/(external)/(with-layout)/feed/[id]/index/",
                                 "fullPath": "/feed/:id/",
                                 "isSync": false,
                               },
-                              "lazy": [Function],
-                              "path": "",
                             },
                           ],
-                          "handle": {
+                          "lazy": [Function],
+                          "path": "",
+                          Symbol(): {
                             "fs": "./pages/(external)/(with-layout)/feed/[id]/layout",
                             "fullPath": "/feed/:id",
                             "isSync": false,
                           },
-                          "lazy": [Function],
-                          "path": "",
                         },
                       ],
-                      "handle": {
+                      "path": ":id",
+                      Symbol(): {
                         "fs": "./pages/(external)/(with-layout)/feed/[id]/:id",
                         "fullPath": "/feed/:id",
                       },
-                      "path": ":id",
                     },
                   ],
-                  "handle": {
+                  "path": "feed",
+                  Symbol(): {
                     "fs": "./pages/(external)/(with-layout)/feed/feed",
                     "fullPath": "/feed",
                   },
-                  "path": "feed",
                 },
                 {
-                  "handle": {
+                  "lazy": [Function],
+                  "path": "",
+                  Symbol(): {
                     "fs": "./pages/(external)/(with-layout)/index/",
                     "fullPath": "/",
                     "isSync": false,
                   },
-                  "lazy": [Function],
-                  "path": "",
                 },
               ],
-              "handle": {
+              "lazy": [Function],
+              "path": "",
+              Symbol(): {
                 "fs": "./pages/(external)/(with-layout)",
                 "fullPath": "",
                 "isSync": false,
               },
-              "lazy": [Function],
-              "path": "",
             },
           ],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(external)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
       ]
     `)
@@ -386,43 +386,43 @@ describe("test route builder", () => {
       [
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(main)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(admin)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(external)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(settings)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
       ]
     `)
@@ -442,33 +442,33 @@ describe("test route builder", () => {
       [
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(main)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(login)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(external)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
       ]
     `)
@@ -489,43 +489,43 @@ describe("test route builder", () => {
       [
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(main)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(login)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(external)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
         {
           "children": [],
-          "handle": {
+          "lazy": [Function],
+          "path": "",
+          Symbol(): {
             "fs": "./pages/(settings)",
             "fullPath": "",
             "isSync": false,
           },
-          "lazy": [Function],
-          "path": "",
         },
       ]
     `)
