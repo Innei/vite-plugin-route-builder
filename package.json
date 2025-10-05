@@ -21,7 +21,7 @@
     "react-router": "7.7.0",
     "tsdown": "0.13.0",
     "typescript": "5.8.3",
-    "vite": "7.0.5",
+    "vite": "7.0.7",
     "vite-tsconfig-paths": "5.1.4",
     "vitest": "3.2.4"
   },
