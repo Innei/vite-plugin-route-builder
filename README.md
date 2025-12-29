@@ -89,6 +89,8 @@ export function loader() {
 }
 ```
 
+You can also use `export default function Component()` in page files.
+
 ### Sync Loading
 
 Files with `.sync.tsx` extension are loaded synchronously, ideal for critical pages:
@@ -280,7 +282,7 @@ export const routes: RouteObject[] = [
   },
   {
     path: 'critical',
-    Component: SyncComponent0.Component,
+    Component: SyncComponent0.Component ?? SyncComponent0.default,
     loader: SyncComponent0.loader,
   },
   {
@@ -293,7 +295,7 @@ export const routes: RouteObject[] = [
       },
       {
         path: 'profile',
-        Component: SyncComponent1.Component,
+        Component: SyncComponent1.Component ?? SyncComponent1.default,
         loader: SyncComponent1.loader,
       },
     ],
@@ -406,7 +408,7 @@ export function loader({ params }: { params: BlogParams }) {
 
 ### Sync Components Not Working
 
-1. Export `Component` (not default export) from `.sync.tsx` files
+1. Export `Component` (named or default) from `.sync.tsx` files
 2. Optional: Export `loader` function for data loading
 3. Check the generated imports in the output file
 

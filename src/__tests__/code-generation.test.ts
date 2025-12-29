@@ -1,7 +1,4 @@
 import { describe, expect, it } from "vitest"
-
-// We'll test the internal logic by creating a simplified version
-// since the actual generateRouteFileContent is internal to the plugin
 describe("Code Generation", () => {
   it("should generate correct imports for sync files", () => {
     const syncImports = new Set(["./pages/critical.sync.tsx"])
@@ -49,23 +46,30 @@ describe("Code Generation", () => {
     }
 
     const routesString = JSON.stringify([route], null, 2)
-      .replaceAll(/"__SYNC_([^.]+)\.Component__"/g, '"$1.Component"')
+      .replaceAll(
+        /"__SYNC_([^.]+)\.Component__"/g,
+        '"$1.Component ?? $1.default"',
+      )
       .replaceAll(/"__SYNC_([^.]+)\.loader__"/g, '"$1.loader"')
 
-    expect(routesString).toContain('"Component": "SyncComponent0.Component"')
+    expect(routesString).toContain(
+      '"Component": "SyncComponent0.Component ?? SyncComponent0.default"',
+    )
     expect(routesString).toContain('"loader": "SyncComponent0.loader"')
   })
 
   it("should remove undefined loader properties", () => {
     const routeString = `{
   "path": "test",
-  "Component": "SyncComponent0.Component",
+  "Component": "SyncComponent0.Component ?? SyncComponent0.default",
   "loader": undefined
 }`
 
     const cleaned = routeString.replaceAll(/,?\s*"loader":\s*undefined/g, "")
 
-    expect(cleaned).toContain('"Component": "SyncComponent0.Component"')
+    expect(cleaned).toContain(
+      '"Component": "SyncComponent0.Component ?? SyncComponent0.default"',
+    )
     expect(cleaned).not.toContain('"loader"')
   })
 
@@ -75,7 +79,7 @@ describe("Code Generation", () => {
     const routes = [
       {
         path: "critical",
-        Component: "SyncComponent0.Component",
+        Component: "SyncComponent0.Component ?? SyncComponent0.default",
         loader: "SyncComponent0.loader",
       },
       {
@@ -102,7 +106,9 @@ export default routes
 
     expect(content).toContain("import * as SyncComponent0")
     expect(content).toContain("const lazy0 = () => import")
-    expect(content).toContain('"Component": "SyncComponent0.Component"')
+    expect(content).toContain(
+      '"Component": "SyncComponent0.Component ?? SyncComponent0.default"',
+    )
     expect(content).toContain('"loader": "SyncComponent0.loader"')
     expect(content).toContain('"lazy": "lazy0"')
     expect(content).toContain("export const routes: RouteObject[]")
