@@ -11,16 +11,16 @@ import type { RouteObject } from "react-router"
 // Imports for page components
 import * as SyncComponent0 from ".//project/src/pages/about.sync"
 import * as SyncComponent1 from ".//project/src/pages/dashboard/admin.sync"
-import * as SyncComponent2 from ".//project/src/pages/settings/profile.sync"
+import * as SyncComponent2 from ".//project/src/pages/settings/layout"
+import * as SyncComponent3 from ".//project/src/pages/settings/profile.sync"
 const lazy0 = () => import(".//project/src/pages/blog/[id]")
-const lazy1 = () => import(".//project/src/pages/settings/layout")
-const lazy2 = () => import(".//project/src/pages/index")
+const lazy1 = () => import(".//project/src/pages/index")
 
 // Generated route configuration
 export const routes: RouteObject[] = [
   {
     "path": "about",
-    "Component": SyncComponent0.Component,
+    "Component": SyncComponent0.Component ?? SyncComponent0.default,
     "loader": SyncComponent0.loader,
     "handle": SyncComponent0.handle
   },
@@ -38,7 +38,7 @@ export const routes: RouteObject[] = [
     "children": [
       {
         "path": "admin",
-        "Component": SyncComponent1.Component,
+        "Component": SyncComponent1.Component ?? SyncComponent1.default,
         "loader": SyncComponent1.loader,
         "handle": SyncComponent1.handle
       }
@@ -49,21 +49,23 @@ export const routes: RouteObject[] = [
     "children": [
       {
         "path": "",
-        "lazy": lazy1,
         "children": [
           {
             "path": "profile",
-            "Component": SyncComponent2.Component,
-            "loader": SyncComponent2.loader,
-            "handle": SyncComponent2.handle
+            "Component": SyncComponent3.Component ?? SyncComponent3.default,
+            "loader": SyncComponent3.loader,
+            "handle": SyncComponent3.handle
           }
-        ]
+        ],
+        "Component": SyncComponent2.Component ?? SyncComponent2.default,
+        "loader": SyncComponent2.loader,
+        "handle": SyncComponent2.handle
       }
     ]
   },
   {
     "path": "",
-    "lazy": lazy2
+    "lazy": lazy1
   }
 ]
 
@@ -131,13 +133,13 @@ import * as SyncComponent2 from ".//project/src/pages/settings/config.sync"
 export const routes: RouteObject[] = [
   {
     "path": "critical",
-    "Component": SyncComponent0.Component,
+    "Component": SyncComponent0.Component ?? SyncComponent0.default,
     "loader": SyncComponent0.loader,
     "handle": SyncComponent0.handle
   },
   {
     "path": "important",
-    "Component": SyncComponent1.Component,
+    "Component": SyncComponent1.Component ?? SyncComponent1.default,
     "loader": SyncComponent1.loader,
     "handle": SyncComponent1.handle
   },
@@ -146,7 +148,7 @@ export const routes: RouteObject[] = [
     "children": [
       {
         "path": "config",
-        "Component": SyncComponent2.Component,
+        "Component": SyncComponent2.Component ?? SyncComponent2.default,
         "loader": SyncComponent2.loader,
         "handle": SyncComponent2.handle
       }
@@ -222,7 +224,7 @@ const lazy0 = () => import(".//project/src/pages/normal")
 export const routes: RouteObject[] = [
   {
     "path": "critical",
-    "Component": SyncComponent0.Component,
+    "Component": SyncComponent0.Component ?? SyncComponent0.default,
     "loader": SyncComponent0.loader,
     "handle": SyncComponent0.handle
   },

@@ -1,26 +1,39 @@
-import { describe, expect, test } from "vitest"
+import { describe, expect, test } from 'vitest'
 
-import { buildGlobRoutes } from "../utils/route-builder"
+import { buildGlobRoutes, ROUTE_BUILDER_HANDLE } from '../utils/route-builder'
 
 const fakePromise = () => Promise.resolve({ default: () => {} })
-describe("test route builder", () => {
-  test("match snapshot with default filesystem order", () => {
+
+function findRouteByFs(routes: any[], fs: string): any | undefined {
+  for (const route of routes) {
+    const metadata = route?.[ROUTE_BUILDER_HANDLE]
+    if (metadata?.fs === fs) return route
+    if (route?.children) {
+      const found = findRouteByFs(route.children, fs)
+      if (found) return found
+    }
+  }
+  return undefined
+}
+
+describe('test route builder', () => {
+  test('match snapshot with default filesystem order', () => {
     expect(
       buildGlobRoutes({
-        "./pages/(external)/layout.tsx": fakePromise,
-        "./pages/(external)/(with-layout)/index.tsx": fakePromise,
-        "./pages/(external)/(with-layout)/layout.tsx": fakePromise,
-        "./pages/(external)/(with-layout)/feed/[id]/index.tsx": fakePromise,
-        "./pages/(external)/(with-layout)/feed/[id]/layout.tsx": fakePromise,
+        './pages/(external)/layout.tsx': fakePromise,
+        './pages/(external)/(with-layout)/index.tsx': fakePromise,
+        './pages/(external)/(with-layout)/layout.tsx': fakePromise,
+        './pages/(external)/(with-layout)/feed/[id]/index.tsx': fakePromise,
+        './pages/(external)/(with-layout)/feed/[id]/layout.tsx': fakePromise,
 
-        "./pages/(main)/layout.tsx": fakePromise,
-        "./pages/(main)/(context)/layout.tsx": fakePromise,
-        "./pages/(main)/(context)/discover/layout.tsx": fakePromise,
-        "./pages/(main)/(context)/discover/index.tsx": fakePromise,
+        './pages/(main)/layout.tsx': fakePromise,
+        './pages/(main)/(context)/layout.tsx': fakePromise,
+        './pages/(main)/(context)/discover/layout.tsx': fakePromise,
+        './pages/(main)/(context)/discover/index.tsx': fakePromise,
 
-        "./pages/preview.tsx": fakePromise,
-        "./pages/add/layout.tsx": fakePromise,
-        "./pages/add/index.tsx": fakePromise,
+        './pages/preview.tsx': fakePromise,
+        './pages/add/layout.tsx': fakePromise,
+        './pages/add/index.tsx': fakePromise,
       }),
     ).toMatchInlineSnapshot(`
       [
@@ -186,26 +199,44 @@ describe("test route builder", () => {
     `)
   })
 
-  test("match snapshot with custom segment group order", () => {
+  test('should propagate sync to parent layout when subtree has sync routes', () => {
+    const routes = buildGlobRoutes({
+      './pages/settings/layout.tsx': fakePromise,
+      './pages/settings/profile.sync.tsx': fakePromise,
+
+      './pages/(main)/layout.tsx': fakePromise,
+      './pages/(main)/profile.sync.tsx': fakePromise,
+    })
+
+    const settingsLayout = findRouteByFs(routes, './pages/settings/layout')
+    expect(settingsLayout).toBeTruthy()
+    expect(settingsLayout[ROUTE_BUILDER_HANDLE]?.isSync).toBe(true)
+
+    const mainGroupLayout = findRouteByFs(routes, './pages/(main)')
+    expect(mainGroupLayout).toBeTruthy()
+    expect(mainGroupLayout[ROUTE_BUILDER_HANDLE]?.isSync).toBe(true)
+  })
+
+  test('match snapshot with custom segment group order', () => {
     expect(
       buildGlobRoutes(
         {
-          "./pages/(external)/layout.tsx": fakePromise,
-          "./pages/(external)/(with-layout)/index.tsx": fakePromise,
-          "./pages/(external)/(with-layout)/layout.tsx": fakePromise,
-          "./pages/(external)/(with-layout)/feed/[id]/index.tsx": fakePromise,
-          "./pages/(external)/(with-layout)/feed/[id]/layout.tsx": fakePromise,
+          './pages/(external)/layout.tsx': fakePromise,
+          './pages/(external)/(with-layout)/index.tsx': fakePromise,
+          './pages/(external)/(with-layout)/layout.tsx': fakePromise,
+          './pages/(external)/(with-layout)/feed/[id]/index.tsx': fakePromise,
+          './pages/(external)/(with-layout)/feed/[id]/layout.tsx': fakePromise,
 
-          "./pages/(main)/layout.tsx": fakePromise,
-          "./pages/(main)/(context)/layout.tsx": fakePromise,
-          "./pages/(main)/(context)/discover/layout.tsx": fakePromise,
-          "./pages/(main)/(context)/discover/index.tsx": fakePromise,
+          './pages/(main)/layout.tsx': fakePromise,
+          './pages/(main)/(context)/layout.tsx': fakePromise,
+          './pages/(main)/(context)/discover/layout.tsx': fakePromise,
+          './pages/(main)/(context)/discover/index.tsx': fakePromise,
 
-          "./pages/preview.tsx": fakePromise,
-          "./pages/add/layout.tsx": fakePromise,
-          "./pages/add/index.tsx": fakePromise,
+          './pages/preview.tsx': fakePromise,
+          './pages/add/layout.tsx': fakePromise,
+          './pages/add/index.tsx': fakePromise,
         },
-        { segmentGroupOrder: ["main", "external"] },
+        { segmentGroupOrder: ['main', 'external'] },
       ),
     ).toMatchInlineSnapshot(`
       [
@@ -371,16 +402,16 @@ describe("test route builder", () => {
     `)
   })
 
-  test("match snapshot with partial custom segment group order", () => {
+  test('match snapshot with partial custom segment group order', () => {
     expect(
       buildGlobRoutes(
         {
-          "./pages/(admin)/layout.tsx": fakePromise,
-          "./pages/(external)/layout.tsx": fakePromise,
-          "./pages/(main)/layout.tsx": fakePromise,
-          "./pages/(settings)/layout.tsx": fakePromise,
+          './pages/(admin)/layout.tsx': fakePromise,
+          './pages/(external)/layout.tsx': fakePromise,
+          './pages/(main)/layout.tsx': fakePromise,
+          './pages/(settings)/layout.tsx': fakePromise,
         },
-        { segmentGroupOrder: ["main"] },
+        { segmentGroupOrder: ['main'] },
       ),
     ).toMatchInlineSnapshot(`
       [
@@ -428,15 +459,15 @@ describe("test route builder", () => {
     `)
   })
 
-  test("match snapshot with custom segment group order using parentheses format", () => {
+  test('match snapshot with custom segment group order using parentheses format', () => {
     expect(
       buildGlobRoutes(
         {
-          "./pages/(external)/layout.tsx": fakePromise,
-          "./pages/(main)/layout.tsx": fakePromise,
-          "./pages/(login)/layout.tsx": fakePromise,
+          './pages/(external)/layout.tsx': fakePromise,
+          './pages/(main)/layout.tsx': fakePromise,
+          './pages/(login)/layout.tsx': fakePromise,
         },
-        { segmentGroupOrder: ["(main)", "(login)"] },
+        { segmentGroupOrder: ['(main)', '(login)'] },
       ),
     ).toMatchInlineSnapshot(`
       [
@@ -474,16 +505,16 @@ describe("test route builder", () => {
     `)
   })
 
-  test("match snapshot with mixed format segment group order", () => {
+  test('match snapshot with mixed format segment group order', () => {
     expect(
       buildGlobRoutes(
         {
-          "./pages/(external)/layout.tsx": fakePromise,
-          "./pages/(main)/layout.tsx": fakePromise,
-          "./pages/(login)/layout.tsx": fakePromise,
-          "./pages/(settings)/layout.tsx": fakePromise,
+          './pages/(external)/layout.tsx': fakePromise,
+          './pages/(main)/layout.tsx': fakePromise,
+          './pages/(login)/layout.tsx': fakePromise,
+          './pages/(settings)/layout.tsx': fakePromise,
         },
-        { segmentGroupOrder: ["(main)", "login", "external"] },
+        { segmentGroupOrder: ['(main)', 'login', 'external'] },
       ),
     ).toMatchInlineSnapshot(`
       [

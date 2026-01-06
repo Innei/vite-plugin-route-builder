@@ -62,6 +62,15 @@ export function buildGlobRoutes(
 
   const routeObject: ExtendedRouteObject[] = []
 
+  const subtreeHasSync = (routes: ExtendedRouteObject[]): boolean => {
+    return routes.some((r) => {
+      const metadata = r[ROUTE_BUILDER_HANDLE]
+      if (metadata?.isSync) return true
+      if (r.children) return subtreeHasSync(r.children)
+      return false
+    })
+  }
+
   function dfsRoutes(
     parentKey: string,
     children: ExtendedRouteObject[],
@@ -169,6 +178,9 @@ export function buildGlobRoutes(
           paths[key]!,
           parentPath,
         )
+        // If any descendant is sync-loaded, the layout must also be sync-loaded
+        // (otherwise the lazy layout import becomes the bottleneck).
+        isSync = isSync || subtreeHasSync(childrenChildren)
         children.push({
           path: '',
           lazy: globGetter,
@@ -208,6 +220,9 @@ export function buildGlobRoutes(
           omit(paths, 'layout') as NestedStructure,
           parentPath,
         )
+        // If any descendant is sync-loaded, the layout must also be sync-loaded
+        // (otherwise the lazy layout import becomes the bottleneck).
+        isSync = isSync || subtreeHasSync(childrenChildren)
         const layoutRoute: ExtendedRouteObject = {
           path: '',
           lazy: globGetter,
